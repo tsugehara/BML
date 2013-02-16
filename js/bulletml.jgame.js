@@ -50,6 +50,13 @@ var BML;
             }
             return bullet;
         };
+        BulletML.bulletContainerFactory = function bulletContainerFactory(opt) {
+            var bullet = new Bullet();
+            if(opt && opt.label) {
+                bullet.label = opt.label;
+            }
+            return bullet;
+        };
         BulletML.defaultIsInsideOfWorld = function defaultIsInsideOfWorld(bullet) {
             var _game = BulletML.game;
             var scw = _game.width;
@@ -125,6 +132,62 @@ var BML;
         return BMLLoader;
     })(ResourceLoader);
     BML.BMLLoader = BMLLoader;    
+    var Bullet = (function () {
+        function Bullet() {
+            this.x = 0;
+            this.y = 0;
+            this.width = 8;
+            this.height = 8;
+        }
+        Bullet.prototype.moveTo = function (x, y) {
+            this.x = x;
+            this.y = y;
+        };
+        Bullet.prototype.update = function () {
+        };
+        Bullet.prototype.remove = function () {
+            this.parent.removeBullet(this);
+        };
+        return Bullet;
+    })();
+    BML.Bullet = Bullet;    
+    var BulletContainer = (function (_super) {
+        __extends(BulletContainer, _super);
+        function BulletContainer() {
+                _super.call(this);
+            this.bullets = new Array();
+            this.disableTransform = true;
+            this.sprite = BulletML.defaultBulletFactory();
+            this.image = this.sprite.image;
+            this.start();
+        }
+        BulletContainer.prototype.appendBullet = function (bullet) {
+            this.bullets.push(bullet);
+            bullet.parent = this;
+        };
+        BulletContainer.prototype.removeBullet = function (bullet) {
+            for(var i = 0; i < this.bullets.length; i++) {
+                if(this.bullets[i] == bullet) {
+                    this.bullets.splice(i, 1);
+                    return true;
+                }
+            }
+            return false;
+        };
+        BulletContainer.prototype.update = function (t) {
+            for(var i = 0; i < this.bullets.length; i++) {
+                this.bullets[i].update();
+            }
+        };
+        BulletContainer.prototype.draw = function (area, context) {
+            for(var i = 0; i < this.bullets.length; i++) {
+                var b = this.bullets[i];
+                context.drawImage(this.image, 0, 0, b.width, b.height, area.x + b.x, area.y + b.y, b.width, b.height);
+            }
+        };
+        return BulletContainer;
+    })(E);
+    BML.BulletContainer = BulletContainer;    
     var AttackPattern = (function () {
         function AttackPattern(bulletml) {
             this._bulletml = bulletml;
@@ -349,13 +412,19 @@ var BML;
             b.x = e.x + ((e.width || 0) - (b.width || 0)) / 2;
             b.y = e.y + ((e.height || 0) - (b.height || 0)) / 2;
             if(config.addTarget) {
-                config.addTarget.append(b);
+                if(config.addTarget["appendBullet"]) {
+                    config.addTarget.appendBullet(b);
+                } else {
+                    config.addTarget.append(b);
+                }
             } else if(e.parent) {
                 e.parent.append(b);
             }
             b["age"] = 0;
             b.update = bt;
-            b.start();
+            if(b.start) {
+                b.start();
+            }
         };
         AttackPattern.prototype._changeDirection = function (cmd, config, ticker) {
             var d = eval(cmd.direction.value) * DEG_TO_RAD;

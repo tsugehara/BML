@@ -11,6 +11,7 @@ module BML {
 
 	export class BulletML {
 		static game:Game;
+		static container:BulletContainer;
 
 		static startBullet(owner:E, caller:any, callback:Function, attackPattern:AttackPattern, config?:any, game?:Game) {
 			if (game === undefined)
@@ -36,7 +37,7 @@ module BML {
 			game.update.handlers = newHandlers;
 		}
 
-		static defaultBulletFactory(opt:any) {
+		static defaultBulletFactory(opt?:any) {
 			var gra = JGUtil.createRadialGradient(
 				new Rectangle(4, 4, 4, 4),
 				0,
@@ -48,6 +49,14 @@ module BML {
 			var bullet = shape.createSprite();
 			if (opt && opt.label)
 				bullet["label"] = opt.label;
+
+			return bullet;
+		}
+
+		static bulletContainerFactory(opt?:any) {
+			var bullet:Bullet = new Bullet();
+			if (opt && opt.label)
+				bullet.label = opt.label;
 
 			return bullet;
 		}
@@ -128,6 +137,89 @@ module BML {
 			this.resource.requestCompleted(name);
 		}
 
+	}
+
+	export class Bullet implements CommonArea {
+		x:number;
+		y:number;
+		width:number;
+		height:number;
+		age:number;
+		parent:BulletContainer;
+		label:any;
+
+		constructor() {
+			this.x = 0;
+			this.y = 0;
+			this.width = 8;
+			this.height = 8;
+		}
+
+		moveTo(x:number, y:number) {
+			this.x = x;
+			this.y = y;
+		}
+
+		update() {}
+
+		remove() {
+			this.parent.removeBullet(this);
+		}
+	}
+
+	export class BulletContainer extends E {
+		sprite:Sprite;
+		image:any;
+		bullets:Bullet[];
+
+		constructor() {
+			super();
+			this.bullets = new Bullet[];
+			this.disableTransform = true;
+			this.sprite = BulletML.defaultBulletFactory();
+			this.image = this.sprite.image;
+			this.start();
+		}
+
+		appendBullet(bullet:Bullet) {
+			this.bullets.push(bullet);
+			bullet.parent = this;
+		}
+
+		removeBullet(bullet:Bullet) {
+			for (var i=0; i<this.bullets.length; i++) {
+				if (this.bullets[i] == bullet) {
+					this.bullets.splice(i, 1);
+					return true;
+				}
+			}
+			return false;
+		}
+
+		update(t:number) {
+			for (var i=0; i<this.bullets.length; i++) {
+				this.bullets[i].update();
+			}
+		}
+
+		draw(area:Area, context:CanvasRenderingContext2D) {
+			//TODO: support scroll?
+			for (var i=0; i<this.bullets.length; i++) {
+				var b = this.bullets[i];
+				context.drawImage(
+					this.image,
+					0,
+					0,
+					b.width,
+					b.height,
+					area.x + b.x,
+					area.y + b.y,
+					b.width,
+					b.height
+				);
+			}
+		}
+		//TODO: 衝突判定系メソッド群
 	}
 
 	export class AttackPattern {
@@ -391,13 +483,18 @@ module BML {
 			b.y = e.y + ((e.height || 0) - (b.height || 0)) / 2;
 
 			if (config.addTarget)
-				config.addTarget.append(b);
+				if (config.addTarget["appendBullet"])
+					config.addTarget.appendBullet(b);
+				else
+					config.addTarget.append(b);
 			else if (e.parent)
 				e.parent.append(b);
 
 			b["age"] = 0;
 			b.update = bt;
-			b.start();
+			if (b.start) {
+				b.start();
+			}
 		}
 
 		_changeDirection(cmd:any, config:any, ticker:any) {

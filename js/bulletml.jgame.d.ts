@@ -5,9 +5,11 @@ interface bulletmljs {
 module BML {
     class BulletML {
         static game: Game;
+        static container: BulletContainer;
         static startBullet(owner: E, caller: any, callback: Function, attackPattern: AttackPattern, config?: any, game?: Game): void;
         static endBulet(owner: E, game?: Game): void;
-        static defaultBulletFactory(opt: any): Sprite;
+        static defaultBulletFactory(opt?: any): Sprite;
+        static bulletContainerFactory(opt?: any): Bullet;
         static defaultIsInsideOfWorld(bullet: E): bool;
         static normalizeRadian(radian: number): number;
         static angleAtoB(a: CommonArea, b: CommonArea): number;
@@ -17,11 +19,34 @@ module BML {
         public load(url: string, identifier: string): void;
         public completed(name: string, bml: any, is_success: bool): void;
     }
+    class Bullet implements CommonArea {
+        public x: number;
+        public y: number;
+        public width: number;
+        public height: number;
+        public age: number;
+        public parent: BulletContainer;
+        public label: any;
+        constructor();
+        public moveTo(x: number, y: number): void;
+        public update(): void;
+        public remove(): void;
+    }
+    class BulletContainer extends E {
+        public sprite: Sprite;
+        public image: any;
+        public bullets: Bullet[];
+        constructor();
+        public appendBullet(bullet: Bullet): void;
+        public removeBullet(bullet: Bullet): bool;
+        public update(t: number): void;
+        public draw(area: Area, context: CanvasRenderingContext2D): void;
+    }
     class AttackPattern {
         public _bulletml: any;
         constructor(bulletml: any);
         static defaultConfig: {
-            bulletFactory: (opt: any) => Sprite;
+            bulletFactory: (opt?: any) => Sprite;
             isInsideOfWorld: (bullet: E) => bool;
             rank: number;
             updateProperties: bool;
