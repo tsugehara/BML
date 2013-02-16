@@ -1,0 +1,4 @@
+../../jgame.js/src/js/jgame.d.ts
+bulletml.ts
+--out ../js/bulletml.jgame.js
+--declaration
