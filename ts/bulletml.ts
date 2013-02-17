@@ -11,6 +11,7 @@ module BML {
 
 	export class BulletML {
 		static game:Game;
+		static defaultSprite:Sprite;
 		static container:BulletContainer;
 
 		static startBullet(owner:E, caller:any, callback:Function, attackPattern:AttackPattern, config?:any, game?:Game) {
@@ -38,15 +39,20 @@ module BML {
 		}
 
 		static defaultBulletFactory(opt?:any) {
-			var gra = JGUtil.createRadialGradient(
-				new Rectangle(4, 4, 4, 4),
-				0,
-				4,
-				["rgba(255,255,255,1.0)", "rgba(255,255,255,1.0)", "rgba(255,0,0,0.8)", "rgba(255,0,0,0.0)"],
-				[0.0, 0.5, 0.8, 1.0]
+			if (! BulletML.defaultSprite) {
+				var gra = JGUtil.createRadialGradient(
+					new Rectangle(4, 4, 4, 4),
+					0,
+					4,
+					["rgba(255,255,255,1.0)", "rgba(255,255,255,1.0)", "rgba(255,0,0,0.8)", "rgba(255,0,0,0.0)"],
+					[0.0, 0.5, 0.8, 1.0]
+				);
+				var shape = new Shape(8, 8, ShapeStyle.fill, gra, ShapeType.arc);
+				BulletML.defaultSprite = shape.createSprite();
+			}
+			var bullet = new Sprite(
+				8, 8, BulletML.defaultSprite.image
 			);
-			var shape = new Shape(8, 8, ShapeStyle.fill, gra, ShapeType.arc);
-			var bullet = shape.createSprite();
 			if (opt && opt.label)
 				bullet["label"] = opt.label;
 

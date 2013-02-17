@@ -32,19 +32,22 @@ var BML;
             game.update.handlers = newHandlers;
         };
         BulletML.defaultBulletFactory = function defaultBulletFactory(opt) {
-            var gra = JGUtil.createRadialGradient(new Rectangle(4, 4, 4, 4), 0, 4, [
-                "rgba(255,255,255,1.0)", 
-                "rgba(255,255,255,1.0)", 
-                "rgba(255,0,0,0.8)", 
-                "rgba(255,0,0,0.0)"
-            ], [
-                0.0, 
-                0.5, 
-                0.8, 
-                1.0
-            ]);
-            var shape = new Shape(8, 8, ShapeStyle.fill, gra, ShapeType.arc);
-            var bullet = shape.createSprite();
+            if(!BulletML.defaultSprite) {
+                var gra = JGUtil.createRadialGradient(new Rectangle(4, 4, 4, 4), 0, 4, [
+                    "rgba(255,255,255,1.0)", 
+                    "rgba(255,255,255,1.0)", 
+                    "rgba(255,0,0,0.8)", 
+                    "rgba(255,0,0,0.0)"
+                ], [
+                    0.0, 
+                    0.5, 
+                    0.8, 
+                    1.0
+                ]);
+                var shape = new Shape(8, 8, ShapeStyle.fill, gra, ShapeType.arc);
+                BulletML.defaultSprite = shape.createSprite();
+            }
+            var bullet = new Sprite(8, 8, BulletML.defaultSprite.image);
             if(opt && opt.label) {
                 bullet["label"] = opt.label;
             }

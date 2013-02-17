@@ -5,6 +5,7 @@ interface bulletmljs {
 module BML {
     class BulletML {
         static game: Game;
+        static defaultSprite: Sprite;
         static container: BulletContainer;
         static startBullet(owner: E, caller: any, callback: Function, attackPattern: AttackPattern, config?: any, game?: Game): void;
         static endBulet(owner: E, game?: Game): void;
