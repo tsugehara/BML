@@ -1,4 +1,5 @@
-../../jgame.js/src/js/jgame.d.ts
+../../jgame.js/lib/webaudio.d.ts
+../../jgame.js/lib/jgame.d.ts
 bulletml.ts
 --out ../js/bulletml.jgame.js
 --declaration
