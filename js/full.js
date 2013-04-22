@@ -131,7 +131,7 @@ window.onload = function() {
 	game.loaded.handle(function() {
 		var enemyX = (320 - 32) / 2;
 
-		var scene = game.currentScene;
+		var scene = game.scene;
 		game.setBgColor(0, 0, 0x33, 255);
 
 		// 自機

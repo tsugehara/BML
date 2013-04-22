@@ -10,11 +10,11 @@ module BML {
 	var DEG_TO_RAD = Math.PI / 180;
 
 	export class BulletML {
-		static game:Game;
-		static defaultSprite:Sprite;
+		static game:jg.Game;
+		static defaultSprite:jg.Sprite;
 		static container:BulletContainer;
 
-		static startBullet(owner:E, caller:any, callback:Function, attackPattern:AttackPattern, config?:any, game?:Game) {
+		static startBullet(owner:jg.E, caller:any, callback:Function, attackPattern:AttackPattern, config?:any, game?:jg.Game) {
 			if (game === undefined)
 				game = BulletML.game;
 
@@ -23,12 +23,12 @@ module BML {
 			game.update.handle(owner, attackPattern.createTicker(caller, callback, config));
 		}
 
-		static endBulet(owner:E, game?:Game) {
+		static endBulet(owner:jg.E, game?:jg.Game) {
 			if (game === undefined)
 				game = BulletML.game;
 
-			var handlers:TriggerHandler[] = game.update.handlers;
-			var newHandlers = new TriggerHandler[];
+			var handlers:jg.TriggerHandler[] = game.update.handlers;
+			var newHandlers = [];
 			for (var i=0; i<handlers.length; i++) {
 				if (handlers[i].owner == owner && handlers[i].handler["isDanmaku"])
 					continue;
@@ -40,19 +40,17 @@ module BML {
 
 		static defaultBulletFactory(opt?:any) {
 			if (! BulletML.defaultSprite) {
-				var gra = JGUtil.createRadialGradient(
-					new Rectangle(4, 4, 4, 4),
+				var gra = jg.JGUtil.createRadialGradient(
+					new jg.Rectangle(4, 4, 4, 4),
 					0,
 					4,
 					["rgba(255,255,255,1.0)", "rgba(255,255,255,1.0)", "rgba(255,0,0,0.8)", "rgba(255,0,0,0.0)"],
 					[0.0, 0.5, 0.8, 1.0]
 				);
-				var shape = new Shape(8, 8, ShapeStyle.fill, gra, ShapeType.arc);
+				var shape = new jg.Shape(8, 8, jg.ShapeStyle.Fill, gra, jg.ShapeType.Arc);
 				BulletML.defaultSprite = shape.createSprite();
 			}
-			var bullet = new Sprite(
-				8, 8, BulletML.defaultSprite.image
-			);
+			var bullet = new jg.Sprite(BulletML.defaultSprite.image);
 			if (opt && opt.label)
 				bullet["label"] = opt.label;
 
@@ -67,7 +65,7 @@ module BML {
 			return bullet;
 		}
 
-		static defaultIsInsideOfWorld(bullet:E) {
+		static defaultIsInsideOfWorld(bullet:jg.E) {
 			var _game = BulletML.game;
 			var scw = _game.width;
 			var sch = _game.height;
@@ -86,7 +84,7 @@ module BML {
 			return radian;
 		}
 
-		static angleAtoB(a:CommonArea, b:CommonArea) {
+		static angleAtoB(a:jg.CommonArea, b:jg.CommonArea) {
 			var ca = {
 				x : a.x + (a.width || 0) / 2,
 				y : a.y + (a.height || 0) / 2
@@ -99,8 +97,8 @@ module BML {
 		}
 	}
 
-	export class BMLLoader extends ResourceLoader {
-		constructor(resource:Resource) {
+	export class BMLLoader extends jg.ResourceLoader {
+		constructor(resource:jg.Resource) {
 			super(resource);
 		}
 
@@ -145,7 +143,7 @@ module BML {
 
 	}
 
-	export class Bullet implements CommonArea {
+	export class Bullet implements jg.CommonArea {
 		x:number;
 		y:number;
 		width:number;
@@ -173,8 +171,8 @@ module BML {
 		}
 	}
 
-	export class BulletContainer extends E {
-		sprite:Sprite;
+	export class BulletContainer extends jg.E {
+		sprite:jg.Sprite;
 		image:any;
 		bullets:Bullet[];
 
@@ -208,7 +206,7 @@ module BML {
 			}
 		}
 
-		draw(area:Area, context:CanvasRenderingContext2D) {
+		draw(context:CanvasRenderingContext2D) {
 			//TODO: support scroll?
 			for (var i=0; i<this.bullets.length; i++) {
 				var b = this.bullets[i];
@@ -218,8 +216,8 @@ module BML {
 					0,
 					b.width,
 					b.height,
-					area.x + b.x,
-					area.y + b.y,
+					b.x,
+					b.y,
 					b.width,
 					b.height
 				);
@@ -244,7 +242,7 @@ module BML {
 		}
 
 		createTicker(caller:any, callback:Function, config:any, action?:any):Function {
-			if (config instanceof E)
+			if (config instanceof jg.E)
 				config = { target: config };
 
 			var topLabels = this._bulletml.getTopActionLabels()
@@ -436,7 +434,7 @@ module BML {
 		}
 
 		_fire(caller:any, callback:Function, cmd:any, config:any, ticker:any, pattern:any) {
-			var e = <E><any>this;
+			var e = <jg.E><any>this;
 			var b = config.bulletFactory({
 				label : cmd.bullet.label
 			});
@@ -606,7 +604,7 @@ module BML {
 }
 
 (function() {
-	var resource = Resource.getInstance();
+	var resource = jg.Resource.getInstance();
 	resource.loaders["xml"] = new BML.BMLLoader(resource);
 	resource.loaders["bml"] = resource.loaders["xml"];
 })();

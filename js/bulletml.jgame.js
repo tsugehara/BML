@@ -22,7 +22,7 @@ var BML;
                 game = BulletML.game;
             }
             var handlers = game.update.handlers;
-            var newHandlers = new Array();
+            var newHandlers = [];
             for(var i = 0; i < handlers.length; i++) {
                 if(handlers[i].owner == owner && handlers[i].handler["isDanmaku"]) {
                     continue;
@@ -33,7 +33,7 @@ var BML;
         };
         BulletML.defaultBulletFactory = function defaultBulletFactory(opt) {
             if(!BulletML.defaultSprite) {
-                var gra = JGUtil.createRadialGradient(new Rectangle(4, 4, 4, 4), 0, 4, [
+                var gra = jg.JGUtil.createRadialGradient(new jg.Rectangle(4, 4, 4, 4), 0, 4, [
                     "rgba(255,255,255,1.0)", 
                     "rgba(255,255,255,1.0)", 
                     "rgba(255,0,0,0.8)", 
@@ -44,10 +44,10 @@ var BML;
                     0.8, 
                     1.0
                 ]);
-                var shape = new Shape(8, 8, ShapeStyle.fill, gra, ShapeType.arc);
+                var shape = new jg.Shape(8, 8, jg.ShapeStyle.Fill, gra, jg.ShapeType.Arc);
                 BulletML.defaultSprite = shape.createSprite();
             }
-            var bullet = new Sprite(8, 8, BulletML.defaultSprite.image);
+            var bullet = new jg.Sprite(BulletML.defaultSprite.image);
             if(opt && opt.label) {
                 bullet["label"] = opt.label;
             }
@@ -133,7 +133,7 @@ var BML;
             this.resource.requestCompleted(name);
         };
         return BMLLoader;
-    })(ResourceLoader);
+    })(jg.ResourceLoader);
     BML.BMLLoader = BMLLoader;    
     var Bullet = (function () {
         function Bullet() {
@@ -182,14 +182,14 @@ var BML;
                 this.bullets[i].update();
             }
         };
-        BulletContainer.prototype.draw = function (area, context) {
+        BulletContainer.prototype.draw = function (context) {
             for(var i = 0; i < this.bullets.length; i++) {
                 var b = this.bullets[i];
-                context.drawImage(this.image, 0, 0, b.width, b.height, area.x + b.x, area.y + b.y, b.width, b.height);
+                context.drawImage(this.image, 0, 0, b.width, b.height, b.x, b.y, b.width, b.height);
             }
         };
         return BulletContainer;
-    })(E);
+    })(jg.E);
     BML.BulletContainer = BulletContainer;    
     var AttackPattern = (function () {
         function AttackPattern(bulletml) {
@@ -203,7 +203,7 @@ var BML;
             speedRate: 2
         };
         AttackPattern.prototype.createTicker = function (caller, callback, config, action) {
-            if(config instanceof E) {
+            if(config instanceof jg.E) {
                 config = {
                     target: config
                 };
@@ -521,7 +521,7 @@ var BML;
     BML.AttackPattern = AttackPattern;    
 })(BML || (BML = {}));
 (function () {
-    var resource = Resource.getInstance();
+    var resource = jg.Resource.getInstance();
     resource.loaders["xml"] = new BML.BMLLoader(resource);
     resource.loaders["bml"] = resource.loaders["xml"];
 })();

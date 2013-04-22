@@ -4,23 +4,23 @@ interface bulletmljs {
 }
 module BML {
     class BulletML {
-        static game: Game;
-        static defaultSprite: Sprite;
+        static game: jg.Game;
+        static defaultSprite: jg.Sprite;
         static container: BulletContainer;
-        static startBullet(owner: E, caller: any, callback: Function, attackPattern: AttackPattern, config?: any, game?: Game): void;
-        static endBulet(owner: E, game?: Game): void;
-        static defaultBulletFactory(opt?: any): Sprite;
+        static startBullet(owner: jg.E, caller: any, callback: Function, attackPattern: AttackPattern, config?: any, game?: jg.Game): void;
+        static endBulet(owner: jg.E, game?: jg.Game): void;
+        static defaultBulletFactory(opt?: any): jg.Sprite;
         static bulletContainerFactory(opt?: any): Bullet;
-        static defaultIsInsideOfWorld(bullet: E): bool;
+        static defaultIsInsideOfWorld(bullet: jg.E): bool;
         static normalizeRadian(radian: number): number;
-        static angleAtoB(a: CommonArea, b: CommonArea): number;
+        static angleAtoB(a: jg.CommonArea, b: jg.CommonArea): number;
     }
-    class BMLLoader extends ResourceLoader {
-        constructor(resource: Resource);
+    class BMLLoader extends jg.ResourceLoader {
+        constructor(resource: jg.Resource);
         public load(url: string, identifier: string): void;
         public completed(name: string, bml: any, is_success: bool): void;
     }
-    class Bullet implements CommonArea {
+    class Bullet implements jg.CommonArea {
         public x: number;
         public y: number;
         public width: number;
@@ -33,22 +33,22 @@ module BML {
         public update(): void;
         public remove(): void;
     }
-    class BulletContainer extends E {
-        public sprite: Sprite;
+    class BulletContainer extends jg.E {
+        public sprite: jg.Sprite;
         public image: any;
         public bullets: Bullet[];
         constructor();
         public appendBullet(bullet: Bullet): void;
         public removeBullet(bullet: Bullet): bool;
         public update(t: number): void;
-        public draw(area: Area, context: CanvasRenderingContext2D): void;
+        public draw(context: CanvasRenderingContext2D): void;
     }
     class AttackPattern {
         public _bulletml: any;
         constructor(bulletml: any);
         static defaultConfig: {
-            bulletFactory: (opt?: any) => Sprite;
-            isInsideOfWorld: (bullet: E) => bool;
+            bulletFactory: (opt?: any) => jg.Sprite;
+            isInsideOfWorld: (bullet: jg.E) => bool;
             rank: number;
             updateProperties: bool;
             speedRate: number;
