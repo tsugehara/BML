@@ -124,6 +124,7 @@ xmlFiles.prev = function() {
 	return result;
 };
 
+jg.globalize();
 window.onload = function() {
 	var game = new Game(320, 320);
 	game.fitToWindow();
@@ -135,13 +136,13 @@ window.onload = function() {
 		game.setBgColor(0, 0, 0x33, 255);
 
 		// 自機
-		var player = (new Shape(32, 32, ShapeStyle.fill, "blue", ShapeType.arc)).createSprite();
+		var player = (new Shape(32, 32, ShapeStyle.Fill, "blue", ShapeType.arc)).createSprite();
 		player.x = 160;
 		player.y = game.height - 32 - player.height;
 		player.speed = 2;
 		scene.append(player);
 		// 敵
-		var enemy = (new Shape(32, 32, ShapeStyle.fill, "red", ShapeType.arc)).createSprite();
+		var enemy = (new Shape(32, 32, ShapeStyle.Fill, "red", ShapeType.arc)).createSprite();
 		enemy.x = enemyX;
 		enemy.y = 64;
 		scene.append(enemy);

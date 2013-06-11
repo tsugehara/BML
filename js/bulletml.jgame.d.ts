@@ -2,7 +2,7 @@ interface bulletmljs {
     build(data: any);
     Bullet: any;
 }
-module BML {
+declare module BML {
     class BulletML {
         static game: jg.Game;
         static defaultSprite: jg.Sprite;
@@ -11,14 +11,14 @@ module BML {
         static endBulet(owner: jg.E, game?: jg.Game): void;
         static defaultBulletFactory(opt?: any): jg.Sprite;
         static bulletContainerFactory(opt?: any): Bullet;
-        static defaultIsInsideOfWorld(bullet: jg.E): bool;
+        static defaultIsInsideOfWorld(bullet: jg.E): boolean;
         static normalizeRadian(radian: number): number;
         static angleAtoB(a: jg.CommonArea, b: jg.CommonArea): number;
     }
     class BMLLoader extends jg.ResourceLoader {
         constructor(resource: jg.Resource);
         public load(url: string, identifier: string): void;
-        public completed(name: string, bml: any, is_success: bool): void;
+        public completed(name: string, bml: any, is_success: boolean): void;
     }
     class Bullet implements jg.CommonArea {
         public x: number;
@@ -39,7 +39,7 @@ module BML {
         public bullets: Bullet[];
         constructor();
         public appendBullet(bullet: Bullet): void;
-        public removeBullet(bullet: Bullet): bool;
+        public removeBullet(bullet: Bullet): boolean;
         public update(t: number): void;
         public draw(context: CanvasRenderingContext2D): void;
     }
@@ -48,9 +48,9 @@ module BML {
         constructor(bulletml: any);
         static defaultConfig: {
             bulletFactory: (opt?: any) => jg.Sprite;
-            isInsideOfWorld: (bullet: jg.E) => bool;
+            isInsideOfWorld: (bullet: jg.E) => boolean;
             rank: number;
-            updateProperties: bool;
+            updateProperties: boolean;
             speedRate: number;
         };
         public createTicker(caller: any, callback: Function, config: any, action?: any): Function;

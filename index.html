@@ -2,15 +2,26 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<script type="text/javascript" src="js/jgame.js"></script>
-<script type="text/javascript" src="js/bulletml.js"></script>
-<script type="text/javascript" src="js/bulletml.jgame.js"></script>
-<script type="text/javascript" src="js/sample.js"></script>
 </head>
 <body>
+	<h1>BMLモジュール</h1>
 	<div>
-		jgame.jsのマップと同じ方式で弾丸を描画します。一応最速ですが、弾丸の画像が一つ一つ異なるような場合には向きません。
+		<h2>BMLモジュールとは</h2>
+		<p>
+			BMLモジュールは、jgame.js用の<a href="">bulletml</a>モジュールです。
+		</p>
+		<p>
+			<a href="https://github.com/daishihmr/bulletml.js">bulletml.js</a>のラッパー昨日として<a href="http://jgame-js.sourceforge.jp">jgame.js</a>モジュールを作っているため、動作にはbulletml.jsが必要になります。
+		</p>
 	</div>
-	<div id="fps_show"></div>
+	<div>
+		<h2>サンプル</h2>
+		<ul>
+			<li><a href="map.html">マップ型描画による弾幕</a></li>
+			<li><a href="sprite.html">Sprite描画による弾幕</a></li>
+			<li><a href="crisp-edges.html">マップ + Crisp-edges</a></li>
+			<li><a href="crisp-edges.html">マップ + 全画面</a></li>
+		</ul>
+	</div>
 </body>
 </html>

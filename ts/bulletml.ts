@@ -178,7 +178,7 @@ module BML {
 
 		constructor() {
 			super();
-			this.bullets = new Bullet[];
+			this.bullets = [];
 			this.disableTransform = true;
 			this.sprite = BulletML.defaultBulletFactory();
 			this.image = this.sprite.image;
@@ -251,7 +251,7 @@ module BML {
 				for ( var i = 0, end = topLabels.length; i < end; i++)
 					tickers[tickers.length] = this._createTicker(caller, callback, config, topLabels[i]);
 
-				var parentTicker = function() {
+				var parentTicker:any = function() {
 					for ( var i = tickers.length; i--;)
 						tickers[i].call(this);
 
@@ -298,7 +298,7 @@ module BML {
 			if (!config.target)
 				throw new Error("target is undefined in config.");
 
-			var ticker = function() {
+			var ticker:any = function() {
 				this.age++;
 				var conf = ticker.config;
 				var ptn = ticker._pattern;
