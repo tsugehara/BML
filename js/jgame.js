@@ -5,33 +5,33 @@ var jg;
         Angle[Angle["Left"] = 1] = "Left";
         Angle[Angle["Right"] = 2] = "Right";
         Angle[Angle["Up"] = 3] = "Up";
-
         Angle[Angle["Down"] = 4] = "Down";
     })(jg.Angle || (jg.Angle = {}));
     var Angle = jg.Angle;
+
     (function (RenderTransferMode) {
         RenderTransferMode[RenderTransferMode["Unknown"] = 0] = "Unknown";
         RenderTransferMode[RenderTransferMode["Transfer"] = 1] = "Transfer";
         RenderTransferMode[RenderTransferMode["Flip"] = 2] = "Flip";
-
         RenderTransferMode[RenderTransferMode["Direct"] = 3] = "Direct";
     })(jg.RenderTransferMode || (jg.RenderTransferMode = {}));
     var RenderTransferMode = jg.RenderTransferMode;
+
     (function (InputEventType) {
         InputEventType[InputEventType["Unknown"] = 0] = "Unknown";
         InputEventType[InputEventType["Keyboard"] = 1] = "Keyboard";
-
         InputEventType[InputEventType["Point"] = 2] = "Point";
     })(jg.InputEventType || (jg.InputEventType = {}));
     var InputEventType = jg.InputEventType;
+
     (function (InputEventAction) {
         InputEventAction[InputEventAction["Unknown"] = 0] = "Unknown";
         InputEventAction[InputEventAction["Down"] = 1] = "Down";
         InputEventAction[InputEventAction["Move"] = 2] = "Move";
-
         InputEventAction[InputEventAction["Up"] = 3] = "Up";
     })(jg.InputEventAction || (jg.InputEventAction = {}));
     var InputEventAction = jg.InputEventAction;
+
     (function (Keytype) {
         Keytype[Keytype["Unknown"] = 0] = "Unknown";
         Keytype[Keytype["Left"] = 1] = "Left";
@@ -39,24 +39,26 @@ var jg;
         Keytype[Keytype["Up"] = 3] = "Up";
         Keytype[Keytype["Down"] = 4] = "Down";
         Keytype[Keytype["Enter"] = 5] = "Enter";
-
         Keytype[Keytype["Esc"] = 6] = "Esc";
     })(jg.Keytype || (jg.Keytype = {}));
     var Keytype = jg.Keytype;
+
     (function (ShapeStyle) {
         ShapeStyle[ShapeStyle["Unknown"] = 0] = "Unknown";
+
         ShapeStyle[ShapeStyle["Stroke"] = 1] = "Stroke";
 
         ShapeStyle[ShapeStyle["Fill"] = 2] = "Fill";
     })(jg.ShapeStyle || (jg.ShapeStyle = {}));
     var ShapeStyle = jg.ShapeStyle;
+
     (function (ShapeType) {
         ShapeType[ShapeType["Unknown"] = 0] = "Unknown";
         ShapeType[ShapeType["Rect"] = 1] = "Rect";
-
         ShapeType[ShapeType["Arc"] = 2] = "Arc";
     })(jg.ShapeType || (jg.ShapeType = {}));
     var ShapeType = jg.ShapeType;
+
     (function (EffectType) {
         EffectType[EffectType["None"] = 0] = "None";
         EffectType[EffectType["Fade"] = 1] = "Fade";
@@ -91,23 +93,24 @@ var jg;
         EffectType[EffectType["BoxInWhite"] = 30] = "BoxInWhite";
         EffectType[EffectType["BoxIn45White"] = 31] = "BoxIn45White";
         EffectType[EffectType["ArcOutWhite"] = 32] = "ArcOutWhite";
-
         EffectType[EffectType["ArcInWhite"] = 33] = "ArcInWhite";
     })(jg.EffectType || (jg.EffectType = {}));
     var EffectType = jg.EffectType;
 })(jg || (jg = {}));
-window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame || ((function () {
-    var lastTime = Date.now ? Date.now() : new Date().getTime();
-    var frame = 1000 / 60;
-    return function (func) {
-        var currentTime = Date.now ? Date.now() : new Date().getTime();
-        var _id = setTimeout(function () {
-            func(Date.now ? Date.now() : new Date().getTime());
-        }, Math.max(0, lastTime + frame - currentTime));
-        lastTime = currentTime;
-        return _id;
-    };
-})());
+if (!window.requestAnimationFrame) {
+    window.requestAnimationFrame = window["mozRequestAnimationFrame"] || window["webkitRequestAnimationFrame"] || window["msRequestAnimationFrame"] || ((function () {
+        var lastTime = Date.now ? Date.now() : new Date().getTime();
+        var frame = 1000 / 60;
+        return function (func) {
+            var currentTime = Date.now ? Date.now() : new Date().getTime();
+            var _id = setTimeout(function () {
+                func(Date.now ? Date.now() : new Date().getTime());
+            }, Math.max(0, lastTime + frame - currentTime));
+            lastTime = currentTime;
+            return _id;
+        };
+    })());
+}
 
 window.createCanvas = function (width, height) {
     var canvas = document.createElement("canvas");
@@ -150,11 +153,13 @@ var jg;
 
         Rectangle.prototype.fit = function (point) {
             if (point.y < this.top)
-                point.y = this.top; else if (point.y > this.bottom)
+                point.y = this.top;
+else if (point.y > this.bottom)
                 point.y = this.bottom;
 
             if (point.x < this.left)
-                point.x = this.left; else if (point.x > this.right)
+                point.x = this.left;
+else if (point.x > this.right)
                 point.x = this.right;
         };
 
@@ -413,6 +418,7 @@ var jg;
         translate: { x: 0, y: 0 },
         transform: { m11: 1, m12: 0, m21: 0, m22: 1, dx: 0, dy: 0 },
         scale: { x: 1, y: 1 },
+        purescale: { x: 1, y: 1 },
         globalAlpha: undefined,
         font: undefined,
         fillStyle: undefined,
@@ -541,7 +547,8 @@ var jg;
 
         E.prototype.remove = function () {
             if (this.parent)
-                this.parent.removeChild(this); else
+                this.parent.removeChild(this);
+else
                 throw "Can not remove layer. (use scene.deleteLayer)";
         };
 
@@ -599,7 +606,8 @@ var jg;
                 return;
             this.started = true;
             if (this.scene)
-                this.scene.game.update.handle(this, this.update); else
+                this.scene.game.update.handle(this, this.update);
+else
                 this.addActiveQueue(function () {
                     this.scene.game.update.handle(this, this.update);
                 });
@@ -610,7 +618,8 @@ var jg;
                 return;
             this.started = false;
             if (this.scene)
-                this.scene.game.update.remove(this, this.update); else
+                this.scene.game.update.remove(this, this.update);
+else
                 this.addActiveQueue(function () {
                     this.scene.game.update.remove(this, this.update);
                 });
@@ -618,7 +627,8 @@ var jg;
 
         E.prototype.startTimer = function (wait, method) {
             if (this.scene)
-                this.scene.game.addTimer(wait, this, method ? method : this.interval); else
+                this.scene.game.addTimer(wait, this, method ? method : this.interval);
+else
                 this.addActiveQueue(function () {
                     this.scene.game.addTimer(wait, this, method ? method : this.interval);
                 });
@@ -626,7 +636,8 @@ var jg;
 
         E.prototype.stopTimer = function (wait, method) {
             if (this.scene)
-                this.scene.game.removeTimer(wait, this, method ? method : this.interval); else
+                this.scene.game.removeTimer(wait, this, method ? method : this.interval);
+else
                 this.addActiveQueue(function () {
                     this.scene.game.removeTimer(wait, this, method ? method : this.interval);
                 });
@@ -637,14 +648,6 @@ var jg;
             while (p.parent)
                 p = p.parent;
             p.isUpdated = true;
-        };
-
-        E.prototype.isUpdate = function () {
-            return this.isUpdated;
-        };
-
-        E.prototype.reflected = function () {
-            this.isUpdated = false;
         };
 
         E.prototype.tl = function () {
@@ -754,9 +757,12 @@ var jg;
 
         E.prototype.show = function () {
             this.opacity = 1;
+            this.updated();
         };
+
         E.prototype.hide = function () {
             this.opacity = 0;
+            this.updated();
         };
         return E;
     })();
@@ -767,7 +773,7 @@ var jg;
     var canvas = document.createElement("canvas");
     var context = canvas.getContext("2d");
     for (var p in jg.ENTITY_OPTIONS_DEFAULT_VALUES)
-        if (jg.ENTITY_OPTIONS_DEFAULT_VALUES[p] == undefined)
+        if (jg.ENTITY_OPTIONS_DEFAULT_VALUES[p] === undefined)
             jg.ENTITY_OPTIONS_DEFAULT_VALUES[p] = context[p];
 })();
 var __extends = this.__extends || function (d, b) {
@@ -794,7 +800,8 @@ var jg;
         Shape.prototype.setClip = function (value) {
             this.clip = value;
             if (this.clip)
-                this.disableTransform = true; else
+                this.disableTransform = true;
+else
                 delete this.disableTransform;
         };
 
@@ -806,18 +813,22 @@ var jg;
         Shape.prototype.setLineWidth = function (width) {
             this.setDrawOption("lineWidth", width);
         };
+
         Shape.prototype.getLineWidth = function () {
             return this.getDrawOption("lineWidth");
         };
 
         Shape.prototype.setColor = function (color) {
             if (this.style == jg.ShapeStyle.Stroke)
-                this.setDrawOption("strokeStyle", color); else
+                this.setDrawOption("strokeStyle", color);
+else
                 this.setDrawOption("fillStyle", color);
         };
+
         Shape.prototype.getColor = function () {
             if (this.style == jg.ShapeStyle.Stroke)
-                return this.getDrawOption("strokeStyle"); else
+                return this.getDrawOption("strokeStyle");
+else
                 return this.getDrawOption("filltyle");
         };
 
@@ -850,7 +861,8 @@ var jg;
                 context.restore();
                 context.clip();
             } else if (this.style == jg.ShapeStyle.Fill)
-                context.fill(); else
+                context.fill();
+else
                 context.stroke();
         };
         Shape.PI_200_PER = Math.PI * 2;
@@ -865,19 +877,17 @@ var jg;
             this.handlers = [];
         }
         Trigger.prototype.handleInsert = function (index, owner, handler) {
-            if (!handler) {
+            if (!handler)
                 this.handlers.splice(index, 0, { owner: window, handler: owner });
-            } else {
+else
                 this.handlers.splice(index, 0, { owner: owner, handler: handler });
-            }
         };
 
         Trigger.prototype.handle = function (owner, handler) {
-            if (!handler) {
+            if (!handler)
                 this.handlers.push({ owner: window, handler: owner });
-            } else {
+else
                 this.handlers.push({ owner: owner, handler: handler });
-            }
         };
 
         Trigger.prototype.destroy = function () {
@@ -887,10 +897,9 @@ var jg;
         Trigger.prototype.removeAll = function (owner) {
             var ret = [];
             var tmp;
-            while (tmp = this.handlers.pop()) {
+            while (tmp = this.handlers.shift())
                 if (tmp.owner != owner)
                     ret.push(tmp);
-            }
 
             this.handlers = ret;
         };
@@ -898,10 +907,9 @@ var jg;
         Trigger.prototype.removeAllByHandler = function (handler) {
             var ret = [];
             var tmp;
-            while (tmp = this.handlers.pop()) {
+            while (tmp = this.handlers.shift())
                 if (tmp.handler != handler)
                     ret.push(tmp);
-            }
 
             this.handlers = ret;
         };
@@ -913,10 +921,9 @@ var jg;
                 handler = owner;
                 owner = window;
             }
-            while (tmp = this.handlers.pop()) {
+            while (tmp = this.handlers.shift())
                 if (tmp.handler != handler || tmp.owner != owner)
                     ret.push(tmp);
-            }
 
             this.handlers = ret;
         };
@@ -1006,6 +1013,7 @@ var jg;
             return this.sound + url;
         };
         ResourceStructure.Default = new ResourceStructure("img/", "sound/");
+
         ResourceStructure.Plain = new ResourceStructure("", "");
         return ResourceStructure;
     })();
@@ -1043,7 +1051,8 @@ var jg;
 
         ImageResourceLoader.prototype.completed = function (name, image, is_success) {
             if (!is_success)
-                console.log("error: " + name); else
+                console.log("error: " + name);
+else
                 this.resource.images[name] = image;
 
             this.resource.requestCompleted(name);
@@ -1087,7 +1096,8 @@ var jg;
 
         ScriptResourceLoader.prototype.completed = function (name, script, is_success) {
             if (!is_success)
-                console.log("error: " + name); else
+                console.log("error: " + name);
+else
                 this.resource.scripts[name] = script;
 
             this.resource.requestCompleted(name);
@@ -1118,7 +1128,8 @@ var jg;
 
         SoundResourceLoader.prototype.completed = function (name, audio, is_success) {
             if (!is_success)
-                console.log("error: " + name); else
+                console.log("error: " + name);
+else
                 this.resource.sounds[name] = audio;
 
             this.resource.requestCompleted(name);
@@ -1185,7 +1196,8 @@ var jg;
             var dot = url.split(/\./g);
             var ext;
             if (dot.length == 0)
-                ext = ""; else
+                ext = "";
+else
                 ext = dot[dot.length - 1];
 
             ext = ext.toLowerCase();
@@ -1282,11 +1294,10 @@ var jg;
                     this[mode + "End"]();
 
             var linkMode = this.currentMode();
-            if (linkMode && this[linkMode + "Show"])
-                this[linkMode + "Show"]();
-
-            if (newMode)
+            if (newMode !== undefined)
                 this.changeMode(newMode);
+else if (linkMode && this[linkMode + "Show"])
+                this[linkMode + "Show"]();
         };
 
         Scene.prototype.createLayer = function (name, size) {
@@ -1294,10 +1305,15 @@ var jg;
                 if (!this.layers[i].hasBuffer())
                     this.layers[i].createBuffer();
 
-            this.layers[name] = new jg.Layer(this);
-            if (size) {
-                this.layers[name].width = size.width;
-                this.layers[name].height = size.height;
+            if (size && size instanceof jg.Layer) {
+                this.layers[name] = size;
+                this.layers[name].scene = this;
+            } else {
+                this.layers[name] = new jg.Layer(this);
+                if (size) {
+                    this.layers[name].width = size.width;
+                    this.layers[name].height = size.height;
+                }
             }
             this.layers[name].createBuffer();
             this.layerCount++;
@@ -1360,7 +1376,8 @@ var jg;
 
         Scene.prototype.append = function (entity, layerName) {
             if (!layerName)
-                this.root.append(entity); else
+                this.root.append(entity);
+else
                 this.layers[layerName].append(entity);
         };
 
@@ -1742,7 +1759,8 @@ var jg;
             if (this.syncObj) {
                 var val;
                 if (typeof this.syncObj[this.syncProp] == "function")
-                    val = this.syncObj[this.syncProp](this); else
+                    val = this.syncObj[this.syncProp](this);
+else
                     val = this.syncObj[this.syncProp];
 
                 this.text = this.syncRound ? Math.round(val) : val;
@@ -1809,7 +1827,8 @@ var jg;
             this.width = size.width;
             this.height = size.height;
             if (offset)
-                this.moveTo(offset.x, offset.y); else
+                this.moveTo(offset.x, offset.y);
+else
                 this.moveTo(0, 0);
 
             this.defaultStyle = "#000";
@@ -1875,7 +1894,8 @@ var jg;
             this.lines = [];
 
             if (this.bufferBg)
-                c.putImageData(this.bufferBg, 0, 0); else
+                c.putImageData(this.bufferBg, 0, 0);
+else
                 c.clearRect(0, 0, this.width, this.height);
 
             c.fillStyle = this.defaultStyle;
@@ -1941,7 +1961,8 @@ var jg;
             this.sprite = new jg.Sprite(this.buffer);
             this.sprite.moveTo(0, 0);
             if (this.entities.length == 1)
-                this.entities.push(this.sprite); else
+                this.entities.push(this.sprite);
+else
                 this.entities[1] = this.sprite;
 
             return offset == len ? -1 : offset;
@@ -2008,6 +2029,7 @@ var jg;
             this.animated.fire();
         };
         MultilineText.LINE_HEIGHT_NORMAL = 1.2;
+
         MultilineText.BROWSER_BASELINE_MARGIN = 0;
         return MultilineText;
     })(jg.E);
@@ -2016,19 +2038,45 @@ var jg;
 var jg;
 (function (jg) {
     var ChipSet = (function () {
-        function ChipSet(tile, image) {
+        function ChipSet(image) {
             this.image = image;
-            this.tile = tile;
-            this.sep = Math.floor(this.image.width / this.tile.tileWidth);
         }
-        ChipSet.prototype.count = function () {
-            return Math.round((this.image.width * this.image.height) / (this.tile.tileWidth * this.tile.tileHeight));
+        ChipSet.prototype.count = function (tile) {
+            return Math.round((this.image.width * this.image.height) / (tile.tileWidth * tile.tileHeight));
         };
 
-        ChipSet.prototype.draw = function (c, x, y, chip) {
-            var tw = this.tile.tileWidth;
-            var th = this.tile.tileHeight;
-            c.drawImage(this.image, (chip % this.sep) * tw, Math.floor(chip / this.sep) * th, tw, th, x * tw, y * th, tw, th);
+        ChipSet.prototype.draw = function (tile, c, x, y, chip) {
+            var tw = tile.tileWidth;
+            var th = tile.tileHeight;
+            var sep = Math.floor(this.image.width / tile.tileWidth);
+            c.drawImage(this.image, (chip % sep) * tw, Math.floor(chip / sep) * th, tw, th, x * tw, y * th, tw, th);
+        };
+
+        ChipSet.prototype.getChips = function (tile) {
+            var len = this.count(tile);
+            var sprite = new jg.Sprite(this.image);
+            var buf = new jg.BufferedRenderer(sprite);
+            var ret = [];
+            var w = tile.tileWidth;
+            var h = tile.tileHeight;
+            var area = {
+                x: 0,
+                y: 0,
+                width: w,
+                height: h
+            };
+            buf.renderUnit(sprite);
+            var sep = Math.floor(this.image.width / tile.tileWidth);
+
+            for (var i = 0; i < len; i++) {
+                ret.push(buf.createSprite({
+                    x: (i % sep) * w,
+                    y: Math.floor(i / sep) * h,
+                    width: w,
+                    height: h
+                }, area, area));
+            }
+            return ret;
         };
         return ChipSet;
     })();
@@ -2039,42 +2087,49 @@ var jg;
         function AutoTileChipSet() {
             _super.apply(this, arguments);
         }
-        AutoTileChipSet.prototype.map = function (x, y) {
-            if (x < 0 || y < 0 || x >= this.tile.size.width || y >= this.tile.size.height)
-                return -1;
-            return this.tile.data[x][y];
+        AutoTileChipSet.prototype.map = function (tile, x, y, out_value) {
+            if (x < 0 || y < 0 || x >= tile.size.width || y >= tile.size.height)
+                return out_value !== undefined ? out_value : -1;
+            return tile.data[x][y];
         };
 
-        AutoTileChipSet.prototype.draw = function (c, x, y, chip) {
-            var tw = this.tile.tileWidth;
-            var th = this.tile.tileHeight;
-            var tw2 = Math.floor(this.tile.tileWidth / 2);
-            var th2 = Math.floor(this.tile.tileHeight / 2);
-            for (var i = 0; i < 4; i++) {
-                for (var j = 0; j < 4; j++) {
-                    var ox = x + (Math.floor((i + 1) / 2) - 1);
-                    var oy = y + (Math.floor((j + 1) / 2) - 1);
-                    var n = this.map(ox, oy);
-                    if (n == -1)
-                        continue;
+        AutoTileChipSet.prototype.count = function (tile) {
+            return 1;
+        };
 
-                    var tx = ox + (i % 2 == 0 ? 1 : -1);
-                    var ty = oy + (j % 2 == 0 ? 1 : -1);
-                    var sel;
-                    var v = this.map(tx, oy);
-                    var h = this.map(ox, ty);
-                    var vh = this.map(tx, ty);
-                    sel = 0;
-                    if (h == n)
+        AutoTileChipSet.prototype.draw = function (tile, c, x, y, chip) {
+            var tw = tile.tileWidth;
+            var th = tile.tileHeight;
+            var tw2 = Math.floor(tw / 2);
+            var th2 = Math.floor(th / 2);
+            var sep = Math.floor(this.image.width / tile.tileWidth);
+
+            chip += this.chipOffset;
+            for (var i = 0; i < 2; i++) {
+                for (var j = 0; j < 2; j++) {
+                    var tx = x + (i == 0 ? -1 : 1);
+                    var ty = y + (j == 0 ? -1 : 1);
+                    var v = this.map(tile, tx, y, chip);
+                    var h = this.map(tile, x, ty, chip);
+                    var vh = this.map(tile, tx, ty, chip);
+                    var sel = 0;
+                    if (h == chip)
                         sel++;
-                    if (v == n)
+                    if (v == chip)
                         sel += 2;
-                    if (sel == 3 && vh == n)
+                    if (sel == 3 && vh == chip)
                         sel++;
 
-                    c.drawImage(this.image, (sel % this.sep) * tw + tw2 * (i % 2 == 0 ? 1 : 0), Math.floor(sel / this.sep) * th + th2 * (j % 2 == 0 ? 1 : 0), tw2, th2, x * tw + tw2 * (i - 1), y * th + th2 * (j - 1), tw2, th2);
+                    c.drawImage(this.image, (sel % sep) * tw + tw2 * i, Math.floor(sel / sep) * th + th2 * j, tw2, th2, x * tw + tw2 * i, y * th + th2 * j, tw2, th2);
                 }
             }
+        };
+
+        AutoTileChipSet.prototype.getChips = function (tile) {
+            var len = this.count(tile);
+            var sprite = new jg.Sprite(this.image, tile.tileWidth, tile.tileHeight);
+
+            return [sprite.createSprite()];
         };
         return AutoTileChipSet;
     })(ChipSet);
@@ -2099,34 +2154,68 @@ var jg;
             var chipset;
             if (opt) {
                 if (opt.autoTile) {
-                    chipset = new AutoTileChipSet(this, image);
+                    chipset = new AutoTileChipSet(image);
                 }
             }
 
             if (!chipset)
-                chipset = new ChipSet(this, image);
+                chipset = new ChipSet(image);
 
             chipset.chipOffset = this.chipCount;
             this.chips.push(chipset);
-            var cnt = chipset.count();
+            var cnt = chipset.count(this);
             var cnt2 = this.chipCount + cnt;
             for (var i = this.chipCount; i < cnt2; i++)
                 this.chipMap[i] = chipset;
             this.chipCount = cnt2;
         };
 
-        Tile.prototype.generate = function (data, width, height) {
-            this.data = data;
-            if (!width)
-                width = this.data.length;
-            if (!height)
-                height = this.data[0].length;
+        Tile.prototype.copyChips = function (tile) {
+            tile.chips = this.chips;
+            tile.chipCount = this.chipCount;
+            tile.chipMap = this.chipMap;
+        };
+
+        Tile.prototype._clear = function (width, height) {
             this.size = {
                 width: width,
                 height: height
             };
             this.width = this.tileWidth * width;
             this.height = this.tileHeight * height;
+        };
+
+        Tile.prototype.clear = function (width, height, value) {
+            if (!width)
+                width = this.size.width;
+            if (!height)
+                height = this.size.height;
+            if (value === undefined)
+                value = -1;
+            this._clear(width, height);
+            this.data = [];
+            for (var x = 0; x < width; x++) {
+                this.data[x] = [];
+                for (var y = 0; y < height; y++)
+                    this.data[x][y] = value;
+            }
+            this.refresh();
+        };
+
+        Tile.prototype.generate = function (data, width, height, transpose) {
+            if (width === true) {
+                transpose = true;
+                width = data.length;
+                height = data[0].length;
+            }
+            if (!width)
+                width = data.length;
+            if (!height)
+                height = data[0].length;
+
+            this.data = transpose ? jg.JGUtil.transpose(data) : data;
+
+            this._clear(width, height);
             this.refresh();
         };
 
@@ -2134,17 +2223,34 @@ var jg;
             this.canvas = window.createCanvas(this.width, this.height);
             var c = this.canvas.getContext("2d");
 
-            for (var x = 0; x < this.size.width; x++) {
-                for (var y = 0; y < this.size.height; y++) {
-                    if (this.data[x][y] < 0)
-                        continue;
-                    var cs = this.chipMap[this.data[x][y]];
-                    cs.draw(c, x, y, this.data[x][y] - cs.chipOffset);
-                }
-            }
+            var chipset;
+            var w = this.size.width;
+            var h = this.size.height;
+            var d = this.data;
+            var cm = this.chipMap;
+            for (var x = 0; x < w; x++)
+                for (var y = 0; y < h; y++)
+                    this.drawChip(x, y, false, c);
+
+            this.updated();
+        };
+
+        Tile.prototype.drawChip = function (x, y, clear, context) {
+            if (context === undefined)
+                context = this.canvas.getContext("2d");
+
+            if (clear)
+                context.clearRect(x * this.tileWidth, y * this.tileHeight, this.tileWidth, this.tileHeight);
+
+            if (this.data[x][y] < 0)
+                return;
+            var cs = this.chipMap[this.data[x][y]];
+            cs.draw(this, context, x, y, this.data[x][y] - cs.chipOffset);
         };
 
         Tile.prototype.draw = function (context) {
+            if (!this.canvas)
+                return;
             var parent = this.parent ? this.parent : this;
             var scroll = parent.scroll ? parent.scroll : { x: 0, y: 0 };
             var src = {
@@ -2190,6 +2296,14 @@ var jg;
 
             context.drawImage(this.canvas, src.x, src.y, src.width, src.height, dist.x, dist.y, dist.width, dist.height);
         };
+
+        Tile.prototype.getChips = function () {
+            var ret = [];
+            var len = this.chips.length;
+            for (var i = 0; i < len; i++)
+                ret = ret.concat(this.chips[i].getChips(this));
+            return ret;
+        };
         return Tile;
     })(jg.E);
     jg.Tile = Tile;
@@ -2204,8 +2318,10 @@ var jg;
             this.x = 0;
             this.y = 0;
             this.scene = scene;
-            this.width = this.scene.game.width;
-            this.height = this.scene.game.height;
+            if (this.scene) {
+                this.width = this.scene.game.width;
+                this.height = this.scene.game.height;
+            }
             this.isUpdated = true;
         }
         Layer.prototype.hasBuffer = function () {
@@ -2252,7 +2368,6 @@ var jg;
         __extends(LoadingScene, _super);
         function LoadingScene(game, resource) {
             _super.call(this, game);
-            this.game = game;
             this.resource = resource;
             this.resource.loaded.handle(this, this.complete);
             this.resource.added.handle(this, this.added);
@@ -2307,6 +2422,7 @@ var jg;
         return InputEvent;
     })();
     jg.InputEvent = InputEvent;
+
     var InputKeyboardEvent = (function (_super) {
         __extends(InputKeyboardEvent, _super);
         function InputKeyboardEvent(action, key, e) {
@@ -2316,6 +2432,7 @@ var jg;
         return InputKeyboardEvent;
     })(InputEvent);
     jg.InputKeyboardEvent = InputKeyboardEvent;
+
     var InputPointEvent = (function (_super) {
         __extends(InputPointEvent, _super);
         function InputPointEvent(action, e, point) {
@@ -2349,6 +2466,9 @@ var jg;
                 scale: function (c, entity, params) {
                     c.transform.apply(c, _this.getMatrix(entity.width, entity.height, params.x, params.y, 0));
                 },
+                purescale: function (c, entity, params) {
+                    c.scale(params.x, params.y);
+                },
                 rotate: function (c, entity, params) {
                     c.transform.apply(c, _this.getMatrix(entity.width, entity.height, 1, 1, params));
                 }
@@ -2376,7 +2496,7 @@ var jg;
 
         Renderer.prototype.renderParent = function (parent, c) {
             if (parent.orderDraw)
-                parent.orderDraw();
+                parent.orderDraw(parent);
 
             c.save();
             if (parent.opacity != 1)
@@ -2451,7 +2571,8 @@ var jg;
         Renderer.prototype.useDrawOption = function (entity, c) {
             for (var p in entity.options) {
                 if (this.drawOptionFunctions[p])
-                    this.drawOptionFunctions[p].call(this, c, entity, entity.options[p]); else {
+                    this.drawOptionFunctions[p].call(this, c, entity, entity.options[p]);
+else {
                     c[p] = entity.options[p];
                 }
             }
@@ -2481,7 +2602,12 @@ var jg;
 
             this.handler = document.createElement("div");
             this.handler.style.display = "inline-block";
+
+            this.handler.setAttribute("tabindex", "1");
+            this.handler.className = "input-handler";
+            this.handler.style.outline = 'none';
             this.container.appendChild(this.handler);
+            this.handler.focus();
 
             this.changeTransferMode(transferMode ? transferMode : jg.RenderTransferMode.Transfer);
 
@@ -2525,17 +2651,17 @@ var jg;
             var hasUpdate = false;
             if (this.scene.layerCount == 1) {
                 var layer = this.scene.root;
-                if (!layer.isUpdate()) {
+                if (!layer.isUpdated) {
                 } else {
                     hasUpdate = true;
                     if (!this.disableClear)
                         this.bc.putImageData(this.bg, 0, 0);
                     this.renderParent(layer, this.bc);
-                    layer.reflected();
+                    layer.isUpdated = false;
                 }
             } else {
                 for (var i in this.scene.layers) {
-                    if (this.scene.layers[i].isUpdate()) {
+                    if (this.scene.layers[i].isUpdated) {
                         hasUpdate = true;
                         break;
                     }
@@ -2546,12 +2672,12 @@ var jg;
                         this.bc.putImageData(this.bg, 0, 0);
                     for (var i in this.scene.layers) {
                         var layer = this.scene.layers[i];
-                        if (layer.isUpdate()) {
+                        if (layer.isUpdated) {
                             layer.context.clearRect(0, 0, layer.width, layer.height);
                             this.renderParent(layer, layer.context);
                         }
                         this.bc.drawImage(layer.canvas, layer.x, layer.y);
-                        layer.reflected();
+                        layer.isUpdated = false;
                     }
                 }
             }
@@ -2713,13 +2839,13 @@ var jg;
         GameTimer.prototype.tryFire = function (t) {
             this.tick += t;
             if (this.wait <= this.tick)
-                this.fire(t);
+                this.fire();
         };
 
-        GameTimer.prototype.fire = function (t) {
+        GameTimer.prototype.fire = function () {
             this.tick = 0;
 
-            this.trigger.fastFire(t);
+            this.trigger.fastFire(this);
         };
         return GameTimer;
     })();
@@ -2733,7 +2859,9 @@ var jg;
             for (var _i = 0; _i < (arguments.length - 2); _i++) {
                 args[_i] = arguments[_i + 2];
             }
+            var _this = this;
             this._exit = false;
+            this.id = jg.JGUtil.generateId();
             this.width = width;
             this.height = height;
             this.targetFps = 0;
@@ -2754,6 +2882,7 @@ var jg;
             this.pointMove = new jg.Trigger();
             this.keyDown = new jg.Trigger();
             this.keyUp = new jg.Trigger();
+            this.userEvent = new jg.Trigger();
             this.timers = [];
 
             this.scene = new jg.Scene(this);
@@ -2765,7 +2894,8 @@ var jg;
             var container, transferMode;
             for (var i = 2; i < arguments.length; i++) {
                 if (arguments[i] instanceof HTMLElement)
-                    container = arguments[i]; else if (typeof arguments[i] == "string") {
+                    container = arguments[i];
+else if (typeof arguments[i] == "string") {
                     this.renderer = new window[arguments[i]](this, container, transferMode);
                     this.renderer.changeScene(this.scene);
                 } else
@@ -2788,6 +2918,14 @@ var jg;
 
             if (document.getElementById("fps_show"))
                 this.fps = document.getElementById("fps_show");
+
+            this.renderer.handler.addEventListener("focus", function () {
+                _this.focus = true;
+            }, false);
+            this.renderer.handler.addEventListener("blur", function () {
+                _this.focus = false;
+            }, false);
+            this.focus = true;
 
             this.setSeed();
 
@@ -2867,13 +3005,19 @@ var jg;
         Game.prototype.onmousedown = function (e) {
             this.isPointDown = true;
             this.eventQueue.push(new jg.InputPointEvent(jg.InputEventAction.Down, e, this.getOffsetByEvent(e)));
+            if (!this.focus)
+                this.renderer.handler.focus();
             e.preventDefault();
         };
+
         Game.prototype.ontouchstart = function (e) {
             var touches = e.changedTouches;
             this.isPointDown = true;
             for (var i = 0, l = touches.length; i < l; i++)
                 this.eventQueue.push(new jg.InputPointEvent(jg.InputEventAction.Down, touches[i], this.getOffsetByEvent(touches[i])));
+
+            if (!this.focus)
+                this.renderer.handler.focus();
 
             e.preventDefault();
         };
@@ -2886,6 +3030,7 @@ var jg;
 
             e.preventDefault();
         };
+
         Game.prototype.ontouchmove = function (e) {
             if (!this.isPointDown)
                 return;
@@ -2907,6 +3052,7 @@ var jg;
 
             e.preventDefault();
         };
+
         Game.prototype.ontouchend = function (e) {
             if (!this.isPointDown)
                 return;
@@ -2921,17 +3067,43 @@ var jg;
         };
 
         Game.prototype.enablePointHandler = function () {
-            this.dragParam = null;
+            this.disablePointHandler();
 
             try  {
                 if (this.isTouchEnable()) {
-                    this.renderer.handler.addEventListener("touchstart", jg.JGUtil.proxy(this.ontouchstart, this), false);
-                    this.renderer.handler.addEventListener("touchmove", jg.JGUtil.proxy(this.ontouchmove, this), false);
-                    this.renderer.handler.addEventListener("touchend", jg.JGUtil.proxy(this.ontouchend, this), false);
+                    this.renderer.handler.addEventListener("touchstart", jg.JGUtil.createIdProxy(this.id, this.ontouchstart, this), false);
+                    this.renderer.handler.addEventListener("touchmove", jg.JGUtil.createIdProxy(this.id, this.ontouchmove, this), false);
+                    this.renderer.handler.addEventListener("touchend", jg.JGUtil.createIdProxy(this.id, this.ontouchend, this), false);
                 } else {
-                    this.renderer.handler.addEventListener("mousedown", jg.JGUtil.proxy(this.onmousedown, this), false);
-                    this.renderer.handler.addEventListener("mousemove", jg.JGUtil.proxy(this.onmousemove, this), false);
-                    this.renderer.handler.addEventListener("mouseup", jg.JGUtil.proxy(this.onmouseup, this), false);
+                    this.renderer.handler.addEventListener("mousedown", jg.JGUtil.createIdProxy(this.id, this.onmousedown, this), false);
+                    this.renderer.handler.addEventListener("mousemove", jg.JGUtil.createIdProxy(this.id, this.onmousemove, this), false);
+                    this.renderer.handler.addEventListener("mouseup", jg.JGUtil.createIdProxy(this.id, this.onmouseup, this), false);
+                }
+            } catch (ex) {
+            }
+        };
+
+        Game.prototype.disablePointHandler = function () {
+            this.dragParam = null;
+            try  {
+                if (this.isTouchEnable()) {
+                    if (jg.JGUtil.getIdProxy(this.id, this.ontouchstart, this)) {
+                        this.renderer.handler.removeEventListener("touchstart", jg.JGUtil.getIdProxy(this.id, this.ontouchstart, this), false);
+                        this.renderer.handler.removeEventListener("touchmove", jg.JGUtil.getIdProxy(this.id, this.ontouchmove, this), false);
+                        this.renderer.handler.removeEventListener("touchend", jg.JGUtil.getIdProxy(this.id, this.ontouchend, this), false);
+                        jg.JGUtil.deleteIdProxy(this.id, this.ontouchstart, this);
+                        jg.JGUtil.deleteIdProxy(this.id, this.ontouchmove, this);
+                        jg.JGUtil.deleteIdProxy(this.id, this.ontouchend, this);
+                    }
+                } else {
+                    if (jg.JGUtil.getIdProxy(this.id, this.onmousedown, this)) {
+                        this.renderer.handler.removeEventListener("mousedown", jg.JGUtil.getIdProxy(this.id, this.onmousedown, this), false);
+                        this.renderer.handler.removeEventListener("mousemove", jg.JGUtil.getIdProxy(this.id, this.onmousemove, this), false);
+                        this.renderer.handler.removeEventListener("mouseup", jg.JGUtil.getIdProxy(this.id, this.onmouseup, this), false);
+                        jg.JGUtil.deleteIdProxy(this.id, this.onmousedown, this);
+                        jg.JGUtil.deleteIdProxy(this.id, this.onmousemove, this);
+                        jg.JGUtil.deleteIdProxy(this.id, this.onmouseup, this);
+                    }
                 }
             } catch (ex) {
             }
@@ -2952,10 +3124,20 @@ var jg;
         };
 
         Game.prototype.enableKeyboardHandler = function () {
+            this.disableKeyboardHandler();
             try  {
-                document.addEventListener("keydown", jg.JGUtil.proxy(this.onkeydown, this), false);
-                document.addEventListener("keyup", jg.JGUtil.proxy(this.onkeyup, this), false);
+                this.renderer.handler.addEventListener("keydown", jg.JGUtil.createIdProxy(this.id, this.onkeydown, this), false);
+                this.renderer.handler.addEventListener("keyup", jg.JGUtil.createIdProxy(this.id, this.onkeyup, this), false);
             } catch (ex) {
+            }
+        };
+
+        Game.prototype.disableKeyboardHandler = function () {
+            if (jg.JGUtil.getIdProxy(this.id, this.onkeydown, this)) {
+                this.renderer.handler.removeEventListener("keydown", jg.JGUtil.getIdProxy(this.id, this.onkeydown, this), false);
+                this.renderer.handler.removeEventListener("keyup", jg.JGUtil.getIdProxy(this.id, this.onkeyup, this), false);
+                jg.JGUtil.deleteIdProxy(this.id, this.onkeydown, this);
+                jg.JGUtil.deleteIdProxy(this.id, this.onkeyup, this);
             }
         };
 
@@ -2994,10 +3176,6 @@ var jg;
             }
         };
 
-        Game.prototype.exit = function () {
-            this._exit = true;
-        };
-
         Game.prototype.changeScene = function (scene, effect, endOldScene) {
             var _this = this;
             if (effect) {
@@ -3019,7 +3197,7 @@ var jg;
         Game.prototype.endScene = function (effect) {
             var _this = this;
             if (this.scenes.length == 1) {
-                this.exit();
+                this.end();
                 return;
             }
             if (effect) {
@@ -3071,7 +3249,8 @@ var jg;
         Game.prototype.setLoadingScene = function (scene) {
             if (!this.loadingScene) {
                 if (scene instanceof jg.LoadingScene)
-                    this.loadingScene = scene; else
+                    this.loadingScene = scene;
+else
                     this.loadingScene = new scene(this, this.resource);
 
                 this.loadingScene.finished.handle(this, this.preloadComplete);
@@ -3086,8 +3265,19 @@ var jg;
         };
 
         Game.prototype.end = function () {
+            if (this._exit)
+                return false;
             this.renderer.render();
             this._exit = true;
+            return true;
+        };
+
+        Game.prototype.resume = function () {
+            if (!this._exit)
+                return false;
+            this._exit = false;
+            this.main();
+            return true;
         };
 
         Game.prototype.setPointingEntity = function (param) {
@@ -3112,6 +3302,11 @@ var jg;
         Game.prototype.raiseInputEvent = function () {
             var e;
             while (e = this.eventQueue.shift()) {
+                if (!this.inputEventMap[e.type]) {
+                    this.userEvent.fire(e);
+                    continue;
+                }
+
                 var n = this.inputEventMap[e.type][e.action];
                 if (e.type == jg.InputEventType.Keyboard) {
                     if (this.scene[n])
@@ -3119,8 +3314,10 @@ var jg;
                     this[n].fire(e);
                 } else {
                     if (e.action == jg.InputEventAction.Down)
-                        this.setPointingEntity(e); else if (!this.dragParam)
-                        return; else
+                        this.setPointingEntity(e);
+else if (!this.dragParam)
+                        continue;
+else
                         (e).set(this.dragParam.entity);
 
                     if ((e).entity && (e).entity[n])
@@ -3186,9 +3383,12 @@ var jg;
         Game.prototype.fullscreen = function () {
             var t = this.renderer.container;
             if (t["requestFullScreen"])
-                t["requestFullScreen"](); else if (t["webkitRequestFullScreen"])
-                t["webkitRequestFullScreen"](); else if (t["mozRequestFullScreen"])
-                t["mozRequestFullScreen"](); else
+                t["requestFullScreen"]();
+else if (t["webkitRequestFullScreen"])
+                t["webkitRequestFullScreen"]();
+else if (t["mozRequestFullScreen"])
+                t["mozRequestFullScreen"]();
+else
                 return false;
             return true;
         };
@@ -3196,9 +3396,12 @@ var jg;
         Game.prototype.exitFullscreen = function () {
             var t = this.renderer.container;
             if (t["exitFullscreen"])
-                t["exitFullscreen"](); else if (t["webkitCancelFullScreen"])
-                t["webkitCancelFullScreen"](); else if (t["mozCancelFullScreen"])
-                t["mozCancelFullScreen"](); else
+                t["exitFullscreen"]();
+else if (t["webkitCancelFullScreen"])
+                t["webkitCancelFullScreen"]();
+else if (t["mozCancelFullScreen"])
+                t["mozCancelFullScreen"]();
+else
                 return false;
             return true;
         };
@@ -3352,7 +3555,8 @@ var jg;
 
             Filter.prototype.checkRGBBoundary = function (val) {
                 if (val < 0)
-                    return 0; else if (val > 255)
+                    return 0;
+else if (val > 255)
                     return 255;
 
                 return val;
@@ -3404,7 +3608,8 @@ var jg;
                 var enableCount = 0;
                 for (var i = 0, len = a.length; i < len; i += 4) {
                     if (a[i] == b[i] && a[i + 1] == b[i + 1] && a[i + 2] == b[i + 2] && a[i + 3] == b[i + 3])
-                        mask[i] = 1; else
+                        mask[i] = 1;
+else
                         mask[i] = 0;
                 }
                 this.mask = mask;
@@ -3824,7 +4029,6 @@ var jg;
 
         (function (NoiseType) {
             NoiseType[NoiseType["Mono"] = 0] = "Mono";
-
             NoiseType[NoiseType["Color"] = 1] = "Color";
         })(ImageFilter.NoiseType || (ImageFilter.NoiseType = {}));
         var NoiseType = ImageFilter.NoiseType;
@@ -4083,7 +4287,8 @@ var jg;
                     this.old[prop] = {};
                     for (var j in this.props[prop]) {
                         if (typeof this.props[prop][j] === "function")
-                            this.target[prop][j] = this.props[prop][j].call(this.entity); else
+                            this.target[prop][j] = this.props[prop][j].call(this.entity);
+else
                             this.target[prop][j] = this.props[prop][j];
                         this.origin[prop][j] = this.entity[prop][j];
                         this.old[prop][j] = this.entity[prop][j];
@@ -4093,11 +4298,13 @@ var jg;
                 }
 
                 if (typeof this.props[prop] === "function")
-                    this.target[prop] = this.props[prop].call(this.entity); else
+                    this.target[prop] = this.props[prop].call(this.entity);
+else
                     this.target[prop] = this.props[prop];
 
                 if (jg.TWEEN_DRAW_OPTION_SETTERS[prop])
-                    this.origin[prop] = this.entity.getDrawOption(prop); else
+                    this.origin[prop] = this.entity.getDrawOption(prop);
+else
                     this.origin[prop] = this.entity[prop];
 
                 this.old[prop] = this.origin[prop];
@@ -4195,7 +4402,8 @@ var jg;
             if (force || this._activated) {
                 this._activated = false;
                 if (this.entity.scene)
-                    this.entity.scene.game.update.remove(this, this.tick); else
+                    this.entity.scene.game.update.remove(this, this.tick);
+else
                     this.entity.addActiveQueue(function () {
                         _this.entity.scene.game.update.remove(_this, _this.tick);
                     });
@@ -4206,7 +4414,8 @@ var jg;
             var _this = this;
             if (force || (!this._activated && !this.paused)) {
                 if (this.entity.scene)
-                    this.entity.scene.game.update.handle(this, this.tick); else
+                    this.entity.scene.game.update.handle(this, this.tick);
+else
                     this.entity.addActiveQueue(function () {
                         _this.entity.scene.game.update.handle(_this, _this.tick);
                     });
@@ -4357,10 +4566,6 @@ var jg;
             });
             this.add(action);
             return this;
-        };
-
-        Timeline.prototype.exec = function (func) {
-            this.then(func);
         };
 
         Timeline.prototype.frame = function (wait, frame) {
@@ -4572,6 +4777,7 @@ var jg;
                 easing: easing
             });
         };
+
         Timeline.prototype.resizeBy = function (size, time, easing, easing2) {
             if (typeof easing === "number") {
                 return this.tween({
@@ -4676,6 +4882,7 @@ var jg;
         return Timeline;
     })();
     jg.Timeline = Timeline;
+
     Timeline.prototype.isFrameBased = false;
 })(jg || (jg = {}));
 var jg;
@@ -4683,6 +4890,32 @@ var jg;
     var JGUtil = (function () {
         function JGUtil() {
         }
+        JGUtil.autoStop = function () {
+            var games = [];
+            for (var _i = 0; _i < (arguments.length - 0); _i++) {
+                games[_i] = arguments[_i + 0];
+            }
+            games.forEach(function (game) {
+                game.renderer.handler.addEventListener("focus", JGUtil.proxy(function () {
+                    this.resume();
+                }, game), false);
+                game.renderer.handler.addEventListener("blur", JGUtil.proxy(function () {
+                    this.end();
+                }, game), false);
+
+                if (document.activeElement !== game.renderer.handler) {
+                    var initEnd = function () {
+                        this.end();
+                        game.loaded.remove(this, initEnd);
+                    };
+                    if (game.scene instanceof jg.LoadingScene)
+                        game.loaded.handle(game, initEnd);
+else
+                        initEnd.call(game);
+                }
+            });
+        };
+
         JGUtil.getCenterPoint = function (p) {
             var a = p;
             if (a.width && a.height) {
@@ -4710,12 +4943,12 @@ var jg;
             var a2 = p2;
             if (a1.width && a1.height) {
                 if (a2.width && a2.height) {
-                    return a1.x <= (a2.x + a2.width) && a2.x <= (a1.x + a1.width) && a1.y <= (a2.y + a2.height) && a2.y <= (a1.y + a1.height);
+                    return a1.x < (a2.x + a2.width) && a2.x < (a1.x + a1.width) && a1.y < (a2.y + a2.height) && a2.y < (a1.y + a1.height);
                 } else {
-                    return a2.x >= a1.x && a2.x <= (a1.x + a1.width) && a2.y >= a1.y && a2.y <= (a1.y + a1.height);
+                    return a2.x >= a1.x && a2.x < (a1.x + a1.width) && a2.y >= a1.y && a2.y < (a1.y + a1.height);
                 }
             } else if (a2.width && a2.height) {
-                return a1.x >= a2.x && a1.x <= (a2.x + a2.width) && a1.y >= a2.y && a1.y <= (a2.y + a2.height);
+                return a1.x >= a2.x && a1.x < (a2.x + a2.width) && a1.y >= a2.y && a1.y < (a2.y + a2.height);
             }
 
             return p1.x == p2.x && p1.y == p2.y;
@@ -4748,10 +4981,12 @@ var jg;
             if (maxMove) {
                 if (absx > maxMove || absy > maxMove) {
                     if (ret.x < 0)
-                        ret.x = -maxMove * xper; else
+                        ret.x = -maxMove * xper;
+else
                         ret.x = maxMove * xper;
                     if (ret.y < 0)
-                        ret.y = -maxMove * yper; else
+                        ret.y = -maxMove * yper;
+else
                         ret.y = maxMove * yper;
                 }
             }
@@ -4768,7 +5003,8 @@ var jg;
                 return null;
 
             if (xp > yp)
-                return (_p1.x > _p2.x) ? jg.Angle.Left : jg.Angle.Right; else
+                return (_p1.x > _p2.x) ? jg.Angle.Left : jg.Angle.Right;
+else
                 return (_p1.y > _p2.y) ? jg.Angle.Up : jg.Angle.Down;
         };
 
@@ -4782,7 +5018,8 @@ var jg;
                 return null;
 
             if (xp > yp)
-                return (_p1.x > _p2.x) ? jg.Keytype.Left : jg.Keytype.Right; else
+                return (_p1.x > _p2.x) ? jg.Keytype.Left : jg.Keytype.Right;
+else
                 return (_p1.y > _p2.y) ? jg.Keytype.Up : jg.Keytype.Down;
         };
 
@@ -4841,32 +5078,36 @@ var jg;
             if (p1.x > p.x) {
                 p1.x -= speed * t;
                 if (p1.x < p.x)
-                    p1.x = p.x; else
+                    p1.x = p.x;
+else
                     xng = true;
             } else if (p1.x < p.x) {
                 p1.x += speed * t;
                 if (p1.x > p.x)
-                    p1.x = p.x; else
+                    p1.x = p.x;
+else
                     xng = true;
             }
 
             if (p1.y > p.y) {
                 p1.y -= speed * t;
                 if (p1.y < p.y)
-                    p1.y = p.y; else
+                    p1.y = p.y;
+else
                     yng = true;
             } else if (p1.y < p.y) {
                 p1.y += speed * t;
                 if (p1.y > p.y)
-                    p1.y = p.y; else
+                    p1.y = p.y;
+else
                     yng = true;
             }
 
             return xng || yng ? false : true;
         };
 
-        JGUtil.orderDrawY = function () {
-            var e = this.entities, len = e.length;
+        JGUtil.orderDrawY = function (target) {
+            var e = target.entities, len = e.length;
             for (var i = 1; i < len; i++) {
                 for (var j = i; j > 0; j--) {
                     if (e[j].y >= e[j - 1].y)
@@ -4968,7 +5209,8 @@ var jg;
             }
 
             if (ret.chrome)
-                ret.webkit = true; else if (ret.webkit)
+                ret.webkit = true;
+else if (ret.webkit)
                 ret.safari = true;
 
             JGUtil.browser = ret;
@@ -4978,7 +5220,8 @@ var jg;
 
         JGUtil.setCrispEdges = function (game, crispEdges) {
             if (crispEdges)
-                window["imageSmoothingEnabled"] = crispEdges; else
+                window["imageSmoothingEnabled"] = crispEdges;
+else
                 delete window["imageSmoothingEnabled"];
             game.refresh();
         };
@@ -4988,9 +5231,72 @@ var jg;
                 func.apply(self, arguments);
             };
         };
+
+        JGUtil.createIdProxy = function (id, func, self) {
+            var proxy = JGUtil.proxy(func, self);
+            JGUtil.idData[id].proxies.push(new ProxyData(func, self, proxy));
+            return proxy;
+        };
+
+        JGUtil.getIdProxy = function (id, func, self) {
+            var proxies = JGUtil.idData[id].proxies;
+            for (var i = 0; i < proxies.length; i++)
+                if (proxies[i].is(func, self))
+                    return proxies[i].proxy;
+
+            return null;
+        };
+
+        JGUtil.deleteIdProxy = function (id, func, self) {
+            var proxies = JGUtil.idData[id].proxies;
+            for (var i = 0; i < proxies.length; i++) {
+                if (proxies[i].is(func, self)) {
+                    proxies.splice(i, 1);
+                    i--;
+                }
+            }
+        };
+
+        JGUtil.generateId = function () {
+            if (!JGUtil.idData)
+                JGUtil.idData = [];
+            JGUtil.idData.push(new IdData());
+            return JGUtil.idData.length - 1;
+        };
+
+        JGUtil.transpose = function (src) {
+            var ret = new Array(src[0].length);
+            for (var y = 0, ylen = ret.length; y < ylen; y++)
+                ret[y] = new Array(src.length);
+
+            for (var x = 0, xlen = src.length; x < xlen; x++)
+                for (var y = 0, ylen = src[x].length; y < ylen; y++)
+                    ret[y][x] = src[x][y];
+
+            return ret;
+        };
         return JGUtil;
     })();
     jg.JGUtil = JGUtil;
+
+    var IdData = (function () {
+        function IdData() {
+            this.proxies = [];
+        }
+        return IdData;
+    })();
+
+    var ProxyData = (function () {
+        function ProxyData(func, self, proxy) {
+            this.func = func;
+            this.self = self;
+            this.proxy = proxy;
+        }
+        ProxyData.prototype.is = function (func, self) {
+            return this.func == func && this.self == self;
+        };
+        return ProxyData;
+    })();
 })(jg || (jg = {}));
 var jg;
 (function (jg) {
@@ -5014,7 +5320,8 @@ var jg;
         Line.prototype.setClip = function (value) {
             this.clip = value;
             if (this.clip)
-                this.disableTransform = true; else
+                this.disableTransform = true;
+else
                 delete this.disableTransform;
         };
 
@@ -5025,10 +5332,12 @@ var jg;
                 var x = this.p[0].x + this.p[i].x;
                 var y = this.p[0].y + this.p[i].y;
                 if (min.x > x)
-                    min.x = x; else if (max.x < x)
+                    min.x = x;
+else if (max.x < x)
                     max.x = x;
                 if (min.y > y)
-                    min.y = y; else if (max.y < y)
+                    min.y = y;
+else if (max.y < y)
                     max.y = y;
             }
             this.width = max.x - min.x;
@@ -5039,6 +5348,7 @@ var jg;
             this.setDrawOption("strokeStyle", color);
             return this;
         };
+
         Line.prototype.getColor = function () {
             return this.getDrawOption("strokeStyle");
         };
@@ -5047,6 +5357,7 @@ var jg;
             this.setDrawOption("fillStyle", color);
             return this;
         };
+
         Line.prototype.getFillColor = function () {
             return this.getDrawOption("fillStyle");
         };
@@ -5055,6 +5366,7 @@ var jg;
             this.setDrawOption("lineWidth", width);
             return this;
         };
+
         Line.prototype.getLineWidth = function () {
             return this.getDrawOption("lineWidth");
         };
@@ -5063,6 +5375,7 @@ var jg;
             this.setDrawOption("lineCap", lineCap);
             return this;
         };
+
         Line.prototype.getLineCap = function () {
             return this.getDrawOption("lineCap");
         };
@@ -5071,6 +5384,7 @@ var jg;
             this.setDrawOption("lineJoin", lineJoin);
             return this;
         };
+
         Line.prototype.getLineJoin = function () {
             return this.getDrawOption("lineJoin");
         };
@@ -5079,6 +5393,7 @@ var jg;
             this.setDrawOption("miterLimit", miterLimit);
             return this;
         };
+
         Line.prototype.getMiterLimit = function () {
             return this.getDrawOption("miterLimit");
         };
@@ -5235,10 +5550,12 @@ var jg;
 (function (jg) {
     var Effect = (function () {
         function Effect(method) {
+            var args = [];
+            for (var _i = 0; _i < (arguments.length - 1); _i++) {
+                args[_i] = arguments[_i + 1];
+            }
             this.method = method;
-            this.arguments = [];
-            for (var i = 1; i < arguments.length; i++)
-                this.arguments.push(arguments[i]);
+            this.arguments = args;
         }
         Effect.sceneEffect = function (game, scene1, scene2, type, callback, endOldScene) {
             var effect = new EffectScene(game, scene1, scene2);
@@ -5483,7 +5800,8 @@ var jg;
             }
 
             if (rotate)
-                sp.tl().resizeTo(this.game.width * 2, this.game.height * 2, t).and().moveTo(-this.game.width / 2, -this.game.height / 2, t); else
+                sp.tl().resizeTo(this.game.width * 2, this.game.height * 2, t).and().moveTo(-this.game.width / 2, -this.game.height / 2, t);
+else
                 sp.tl().resizeTo(this.game.width, this.game.height, t).and().moveTo(0, 0, t);
             sp.tl().then(function () {
                 _this.effected.fire();
@@ -5638,12 +5956,7 @@ var jg;
             this.padding = padding ? padding : new jg.Rectangle(8, 8, 8, 8);
             this.entities = [];
             if (bgImage) {
-                var bg;
-                if (bgImage instanceof jg.E) {
-                    bg = bgImage;
-                } else {
-                    bg = new jg.Sprite(bgImage);
-                }
+                var bg = (bgImage instanceof jg.E) ? bgImage : new jg.Sprite(bgImage);
                 this.setBg(this.createBgImage(bg));
             } else {
                 this.defaultSkin();
@@ -5652,6 +5965,7 @@ var jg;
         UIWindow.prototype.getBg = function () {
             return this.entities[0];
         };
+
         UIWindow.prototype.setBg = function (bg) {
             if (this.bg)
                 this.bg.remove();
@@ -5661,7 +5975,9 @@ var jg;
 
         UIWindow.prototype.createBgImage = function (e, srcPadding, buf) {
             if (!buf)
-                var buf = new jg.BufferedRenderer(e);
+                buf = new jg.BufferedRenderer(e);
+            if (srcPadding === undefined)
+                srcPadding = this.padding;
             buf.renderUnit(e);
             if (buf.filter)
                 buf.applyFilter(buf.c, buf.size);
@@ -5670,65 +5986,65 @@ var jg;
             bg.height = this.height;
             bg.entities = [];
 
-            var s4_1 = buf.createSprite({ x: 0, y: 0, width: this.padding.left, height: this.padding.top });
+            var s4_1 = buf.createSprite({ x: 0, y: 0, width: srcPadding.left, height: srcPadding.top });
             s4_1.moveTo(0, 0);
             bg.append(s4_1);
-            var s4_2 = buf.createSprite({ x: e.width - this.padding.right, y: 0, width: this.padding.right, height: this.padding.top });
-            s4_2.moveTo(this.width - this.padding.right, 0);
+            var s4_2 = buf.createSprite({ x: e.width - srcPadding.right, y: 0, width: srcPadding.right, height: srcPadding.top });
+            s4_2.moveTo(this.width - srcPadding.right, 0);
             bg.append(s4_2);
-            var s4_3 = buf.createSprite({ x: e.width - this.padding.right, y: e.height - this.padding.bottom, width: this.padding.right, height: this.padding.bottom });
-            s4_3.moveTo(this.width - this.padding.right, this.height - this.padding.bottom);
+            var s4_3 = buf.createSprite({ x: e.width - srcPadding.right, y: e.height - srcPadding.bottom, width: srcPadding.right, height: srcPadding.bottom });
+            s4_3.moveTo(this.width - srcPadding.right, this.height - srcPadding.bottom);
             bg.append(s4_3);
-            var s4_4 = buf.createSprite({ x: 0, y: e.height - this.padding.bottom, width: this.padding.left, height: this.padding.bottom });
-            s4_4.moveTo(0, this.height - this.padding.bottom);
+            var s4_4 = buf.createSprite({ x: 0, y: e.height - srcPadding.bottom, width: srcPadding.left, height: srcPadding.bottom });
+            s4_4.moveTo(0, this.height - srcPadding.bottom);
             bg.append(s4_4);
 
             var h4_1 = buf.createSprite({
-                x: this.padding.left,
+                x: srcPadding.left,
                 y: 0,
-                width: e.width - this.padding.right - this.padding.left,
-                height: this.padding.top
+                width: e.width - srcPadding.right - srcPadding.left,
+                height: srcPadding.top
             });
-            h4_1.moveTo(this.padding.left, 0);
-            h4_1.width = this.width - this.padding.right - this.padding.left;
+            h4_1.moveTo(srcPadding.left, 0);
+            h4_1.width = this.width - srcPadding.right - srcPadding.left;
             bg.append(h4_1);
             var h4_2 = buf.createSprite({
-                x: e.width - this.padding.right,
-                y: this.padding.top,
-                width: this.padding.right,
-                height: e.height - this.padding.top - this.padding.bottom
+                x: e.width - srcPadding.right,
+                y: srcPadding.top,
+                width: srcPadding.right,
+                height: e.height - srcPadding.top - srcPadding.bottom
             });
-            h4_2.moveTo(this.width - this.padding.right, this.padding.top);
-            h4_2.height = this.height - this.padding.top - this.padding.bottom;
+            h4_2.moveTo(this.width - srcPadding.right, srcPadding.top);
+            h4_2.height = this.height - srcPadding.top - srcPadding.bottom;
             bg.append(h4_2);
             var h4_3 = buf.createSprite({
-                x: this.padding.left,
-                y: e.height - this.padding.bottom,
-                width: e.width - this.padding.right - this.padding.left,
-                height: this.padding.bottom
+                x: srcPadding.left,
+                y: e.height - srcPadding.bottom,
+                width: e.width - srcPadding.right - srcPadding.left,
+                height: srcPadding.bottom
             });
-            h4_3.moveTo(this.padding.left, this.height - this.padding.bottom);
-            h4_3.width = this.width - this.padding.right - this.padding.left;
+            h4_3.moveTo(srcPadding.left, this.height - srcPadding.bottom);
+            h4_3.width = this.width - srcPadding.right - srcPadding.left;
             bg.append(h4_3);
             var h4_4 = buf.createSprite({
                 x: 0,
-                y: this.padding.top,
-                width: this.padding.left,
-                height: e.height - this.padding.top - this.padding.bottom
+                y: srcPadding.top,
+                width: srcPadding.left,
+                height: e.height - srcPadding.top - srcPadding.bottom
             });
-            h4_4.moveTo(0, this.padding.top);
-            h4_4.height = this.height - this.padding.top - this.padding.bottom;
+            h4_4.moveTo(0, srcPadding.top);
+            h4_4.height = this.height - srcPadding.top - srcPadding.bottom;
             bg.append(h4_4);
 
             var center = buf.createSprite({
-                x: this.padding.left,
-                y: this.padding.top,
-                width: e.width - this.padding.left - this.padding.right,
-                height: e.height - this.padding.top - this.padding.bottom
+                x: srcPadding.left,
+                y: srcPadding.top,
+                width: e.width - srcPadding.left - srcPadding.right,
+                height: e.height - srcPadding.top - srcPadding.bottom
             });
-            center.moveTo(this.padding.left, this.padding.top);
-            center.width = this.width - this.padding.left - this.padding.right;
-            center.height = this.height - this.padding.top - this.padding.bottom;
+            center.moveTo(srcPadding.left, srcPadding.top);
+            center.width = this.width - srcPadding.left - srcPadding.right;
+            center.height = this.height - srcPadding.top - srcPadding.bottom;
             bg.append(center);
 
             return bg.createSprite();
@@ -5803,6 +6119,7 @@ var jg;
         MessageWindow.prototype.getNextCursor = function () {
             return this.nextCursor;
         };
+
         MessageWindow.prototype.setNextCursor = function (cursor) {
             this.nextCursor = cursor;
         };
@@ -5816,6 +6133,7 @@ var jg;
             this.isReaded = false;
             return this.scriptOffset;
         };
+
         MessageWindow.prototype.setScript = function (script, offset) {
             var textArea = this.textArea;
             this.script = script;
@@ -5849,26 +6167,34 @@ var jg;
 
         MessageWindow.prototype.hide = function (fade) {
             if (fade)
-                this.tl().fadeOut(200); else
+                this.tl().fadeOut(200);
+else
                 _super.prototype.hide.call(this);
         };
+
         MessageWindow.prototype.show = function (fade) {
             if (fade)
-                this.tl().fadeIn(200); else
+                this.tl().fadeIn(200);
+else
                 _super.prototype.show.call(this);
         };
+
         MessageWindow.prototype.showText = function () {
             this.textArea.startAnimation();
         };
+
         MessageWindow.prototype.fastMode = function () {
             this.textArea.animeSpeed = this.fastSpeed;
         };
+
         MessageWindow.prototype.normalMode = function () {
             this.textArea.animeSpeed = this.normalSpeed;
         };
+
         MessageWindow.prototype.showAll = function () {
             this.textArea.showAll();
         };
+
         MessageWindow.prototype.next = function () {
             if (this.scriptOffset < 0)
                 return false;
@@ -5890,6 +6216,7 @@ var jg;
             old.tl().moveBy(0, -textArea.height, time).removeFromScene();
             textArea.tl().moveBy(0, -movePoint, (movePoint / textArea.height) * time);
         };
+
         MessageWindow.prototype.oldFadeOut = function (time) {
             if (time === undefined)
                 time = 500;
@@ -5931,7 +6258,8 @@ var jg;
                     image = sprite.image;
                 }
                 if (scale)
-                    context.drawImage(image, 0, 0, width, height); else
+                    context.drawImage(image, 0, 0, width, height);
+else
                     context.drawImage(image, 0, 0);
             }
             this.imageData = context.getImageData(0, 0, this.width, this.height);
