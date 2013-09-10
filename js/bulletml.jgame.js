@@ -108,7 +108,8 @@ var BML;
                     if (xhr.responseXML != null) {
                         var bml = bulletml.build(xhr.responseXML);
                         if (bml)
-                            callback.call(caller, identifier, bml, true); else {
+                            callback.call(caller, identifier, bml, true);
+else {
                             console.log(url + "は妥当なBulletMLではありません。");
                             callback.call(caller, identifier, bml, false);
                         }
@@ -127,7 +128,8 @@ var BML;
 
         BMLLoader.prototype.completed = function (name, bml, is_success) {
             if (!is_success)
-                console.log("error: " + name); else
+                console.log("error: " + name);
+else
                 this.resource["images"][name] = new AttackPattern(bml);
 
             this.resource.requestCompleted(name);
@@ -214,7 +216,7 @@ var BML;
                     tickers[tickers.length] = this._createTicker(caller, callback, config, topLabels[i]);
 
                 var parentTicker = function () {
-                    for (var i = tickers.length; i--; )
+                    for (var i = tickers.length; i--;)
                         tickers[i].call(this);
 
                     if (parentTicker.compChildCount === tickers.length) {
@@ -224,7 +226,7 @@ var BML;
                     }
                 };
 
-                for (var i = tickers.length; i--; )
+                for (var i = tickers.length; i--;)
                     tickers[i].parentTicker = parentTicker;
 
                 parentTicker.compChildCount = 0;
@@ -269,11 +271,13 @@ var BML;
                     return;
 
                 if (this.age < ticker.chDirEnd)
-                    ticker.direction += ticker.dirIncr; else if (this.age === ticker.chDirEnd)
+                    ticker.direction += ticker.dirIncr;
+else if (this.age === ticker.chDirEnd)
                     ticker.direction = ticker.dirFin;
 
                 if (this.age < ticker.chSpdEnd)
-                    ticker.speed += ticker.spdIncr; else if (this.age === ticker.chSpdEnd)
+                    ticker.speed += ticker.spdIncr;
+else if (this.age === ticker.chSpdEnd)
                     ticker.speed = ticker.spdFin;
 
                 if (this.age < ticker.aclEnd) {
@@ -291,7 +295,8 @@ var BML;
                     ticker.completed = true;
 
                     if (ticker.parentTicker)
-                        ticker.parentTicker.completeChild(); else if (callback)
+                        ticker.parentTicker.completeChild();
+else if (callback)
                         callback.call(caller);
 
                     return;
@@ -315,8 +320,10 @@ var BML;
                         case "wait":
                             var v = 0;
                             if (typeof (cmd.value) === 'number')
-                                ticker.waitTo = this.age + cmd.value; else if ((v = ~~(cmd.value)) !== 0)
-                                ticker.waitTo = this.age + v; else
+                                ticker.waitTo = this.age + cmd.value;
+else if ((v = ~~(cmd.value)) !== 0)
+                                ticker.waitTo = this.age + v;
+else
                                 ticker.waitTo = this.age + eval(cmd.value);
 
                             return;
@@ -341,14 +348,17 @@ var BML;
 
                 ticker.completed = true;
                 if (ticker.parentTicker)
-                    ticker.parentTicker.completeChild(); else if (callback)
+                    ticker.parentTicker.completeChild();
+else if (callback)
                     callback.call(caller);
             };
 
             action = action || "top";
             if (typeof (action) === "string")
-                ticker.walker = this._bulletml.getWalker(action, config.rank); else if (action instanceof bulletml.Bullet)
-                ticker.walker = action.getWalker(config.rank); else
+                ticker.walker = this._bulletml.getWalker(action, config.rank);
+else if (action instanceof bulletml.Bullet)
+                ticker.walker = action.getWalker(config.rank);
+else
                 throw new Error("Invalid arguments");
 
             ticker._pattern = this;
@@ -395,7 +405,8 @@ var BML;
                 switch (d.type) {
                     case "aim":
                         if (config.target)
-                            return BulletML.angleAtoB(e, config.target) + dv; else
+                            return BulletML.angleAtoB(e, config.target) + dv;
+else
                             return dv - Math.PI / 2;
 
                     case "absolute":
@@ -432,8 +443,10 @@ var BML;
 
             if (config.addTarget)
                 if (config.addTarget["appendBullet"])
-                    config.addTarget.appendBullet(b); else
-                    config.addTarget.append(b); else if (e.parent)
+                    config.addTarget.appendBullet(b);
+else
+                    config.addTarget.append(b);
+else if (e.parent)
                 e.parent.append(b);
 
             b["age"] = 0;

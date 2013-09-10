@@ -2,3 +2,4 @@
 bulletml.ts
 --out ../js/bulletml.jgame.js
 --declaration
+--removeComments

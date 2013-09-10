@@ -132,11 +132,11 @@ module BML {
 			xhr.send(null);
 		}
 
-		completed(name:string, bml:any, is_success:bool) {
+		completed(name:string, bml:any, is_success:boolean) {
 			if (! is_success)
 				console.log("error: "+name);
 			else
-				this.resource["images"][name] = new AttackPattern(bml);	//bad know how
+				this.resource["images"][name] = <any>new AttackPattern(bml);	//bad know how
 
 			this.resource.requestCompleted(name);
 		}
